@@ -1,0 +1,10 @@
+from PIL import Image
+
+icon_192 = Image.new("RGBA", (192, 192), (74, 144, 226, 255))
+icon_512 = Image.new("RGBA", (512, 512), (74, 144, 226, 255))
+
+icon_192_path = folder_path + "/icons/icon-192.png"
+icon_512_path = folder_path + "/icons/icon-512.png"
+
+icon_192.save(icon_192_path)
+icon_512.save(icon_512_path)
