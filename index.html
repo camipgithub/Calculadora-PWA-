@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora de Precios</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#4a90e2" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input[type=number] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      box-sizing: border-box;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Calculadora de Precios</h2>
+  <label for="costo">Costo:</label>
+  <input type="number" id="costo" placeholder="Ingrese el costo" />
+
+  <label for="markup">Markup deseado (%) :</label>
+  <input type="number" id="markup" placeholder="Ejemplo: 40" />
+
+  <label for="margen">Margen deseado (%) :</label>
+  <input type="number" id="margen" placeholder="Ejemplo: 40" />
+
+  <div class="result" id="precioMarkup">Precio con Markup: —</div>
+  <div class="result" id="precioMargen">Precio con Margen: —</div>
+</div>
+
+<script>
+  const costoInput = document.getElementById('costo');
+  const markupInput = document.getElementById('markup');
+  const margenInput = document.getElementById('margen');
+  const precioMarkupDiv = document.getElementById('precioMarkup');
+  const precioMargenDiv = document.getElementById('precioMargen');
+
+  function calcular() {
+    const costo = parseFloat(costoInput.value);
+    const markup = parseFloat(markupInput.value);
+    const margen = parseFloat(margenInput.value);
+
+    if (!isNaN(costo) && !isNaN(markup)) {
+      const precioMarkup = costo * (1 + markup/100);
+      precioMarkupDiv.textContent = `Precio con Markup: $${precioMarkup.toFixed(2)}`;
+    } else {
+      precioMarkupDiv.textContent = `Precio con Markup: —`;
+    }
+
+    if (!isNaN(costo) && !isNaN(margen) && margen < 100) {
+      const precioMargen = costo / (1 - margen/100);
+      precioMargenDiv.textContent = `Precio con Margen: $${precioMargen.toFixed(2)}`;
+    } else {
+      precioMargenDiv.textContent = `Precio con Margen: —`;
+    }
+  }
+
+  costoInput.addEventListener('input', calcular);
+  markupInput.addEventListener('input', calcular);
+  margenInput.addEventListener('input', calcular);
+
+  // Registro Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('Service Worker registrado.', reg))
+        .catch(err => console.log('Error registrando Service Worker:', err));
+    });
+  }
+</script>
+
+</body>
+</html>
